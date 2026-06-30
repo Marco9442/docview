@@ -1,0 +1,3564 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文旅AI+：基于垂域模型的一体化解决方案</title>
+    <style>
+      :root {
+        --paper: #f7f0e3;
+        --paper-2: #fffaf0;
+        --ink: #17211f;
+        --muted: #5e665f;
+        --line: #d9cbb5;
+        --line-dark: #9a7e5a;
+        --cinnabar: #b55239;
+        --ochre: #d79b45;
+        --jade: #246b5a;
+        --teal: #2d7e89;
+        --night: #142320;
+        --shadow: rgba(38, 28, 18, 0.12);
+        --font-cn:
+          "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "SimHei",
+          sans-serif;
+        --font-code:
+          "Cascadia Code", "SFMono-Regular", Consolas, "Courier New", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background:
+          radial-gradient(
+            circle at 10% 0%,
+            rgba(181, 82, 57, 0.14),
+            transparent 34rem
+          ),
+          radial-gradient(
+            circle at 90% 6%,
+            rgba(36, 107, 90, 0.18),
+            transparent 36rem
+          ),
+          #eee2cf;
+        color: var(--ink);
+        font-family: var(--font-cn);
+        line-height: 1.72;
+        font-size: 15.5px;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .page-wrapper {
+        max-width: 1180px;
+        margin: 34px auto;
+        background: var(--paper);
+        box-shadow: 0 24px 80px var(--shadow);
+        border: 1px solid rgba(154, 126, 90, 0.35);
+        overflow: hidden;
+      }
+
+      .cover {
+        position: relative;
+        min-height: 720px;
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 32px;
+        padding: 76px 76px 64px;
+        color: #f8ecd9;
+        background:
+          linear-gradient(
+            135deg,
+            rgba(20, 35, 32, 0.96),
+            rgba(28, 43, 39, 0.92)
+          ),
+          radial-gradient(
+            circle at 50% 50%,
+            rgba(215, 155, 69, 0.24),
+            transparent 30rem
+          );
+        overflow: hidden;
+      }
+
+      .cover::before {
+        content: "";
+        position: absolute;
+        inset: 36px;
+        border: 1px solid rgba(215, 155, 69, 0.32);
+        pointer-events: none;
+      }
+
+      .cover::after {
+        content: "";
+        position: absolute;
+        width: 540px;
+        height: 540px;
+        right: -120px;
+        top: 72px;
+        border-radius: 50%;
+        background:
+          repeating-conic-gradient(
+            from -20deg,
+            rgba(215, 155, 69, 0.24) 0 3deg,
+            transparent 3deg 9deg
+          ),
+          radial-gradient(
+            circle,
+            transparent 0 42%,
+            rgba(215, 155, 69, 0.13) 43% 44%,
+            transparent 45% 100%
+          );
+        opacity: 0.82;
+        mix-blend-mode: screen;
+      }
+
+      .cover-main,
+      .cover-panel {
+        position: relative;
+        z-index: 1;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 28px;
+        color: #e7be78;
+        letter-spacing: 0.18em;
+        font-size: 13px;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 42px;
+        height: 1px;
+        background: #e7be78;
+      }
+
+      h1 {
+        font-size: clamp(46px, 6vw, 78px);
+        line-height: 0.98;
+        margin: 0 0 26px;
+        letter-spacing: -0.06em;
+        font-weight: 850;
+      }
+
+      .subtitle {
+        font-size: 24px;
+        margin: 0 0 42px;
+        color: #f2d9ab;
+        font-weight: 500;
+      }
+
+      .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        max-width: 680px;
+      }
+
+      .meta-item {
+        border-top: 1px solid rgba(231, 190, 120, 0.5);
+        padding-top: 12px;
+        color: #ead7b7;
+        font-size: 14px;
+      }
+
+      .meta-item strong {
+        display: block;
+        color: #fff7e8;
+        font-size: 18px;
+        margin-bottom: 2px;
+      }
+
+      .cover-panel {
+        align-self: end;
+        display: grid;
+        gap: 16px;
+      }
+
+      .cover-statement {
+        padding: 26px;
+        border: 1px solid rgba(231, 190, 120, 0.38);
+        background: rgba(247, 240, 227, 0.07);
+        backdrop-filter: blur(2px);
+      }
+
+      .cover-statement .label {
+        display: block;
+        color: #e7be78;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        margin-bottom: 12px;
+      }
+
+      .cover-statement p {
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.65;
+        color: #fff1d6;
+      }
+
+      .cover-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .cover-metric {
+        padding: 18px;
+        background: rgba(255, 250, 240, 0.08);
+        border-left: 3px solid #d79b45;
+      }
+
+      .cover-metric b {
+        display: block;
+        font-size: 30px;
+        line-height: 1.1;
+        color: #fff8e9;
+      }
+
+      .cover-metric span {
+        color: #dfc9a4;
+        font-size: 13px;
+      }
+
+      .content {
+        padding: 58px 76px 84px;
+        background:
+          linear-gradient(90deg, rgba(154, 126, 90, 0.08) 1px, transparent 1px),
+          linear-gradient(
+            180deg,
+            rgba(154, 126, 90, 0.08) 1px,
+            transparent 1px
+          ),
+          var(--paper);
+        background-size: 32px 32px;
+      }
+
+      .toc {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px 34px;
+        margin-bottom: 58px;
+        padding: 28px;
+        background: rgba(255, 250, 240, 0.72);
+        border: 1px solid var(--line);
+      }
+
+      .toc h2 {
+        grid-column: 1 / -1;
+        margin: 0 0 8px;
+        font-size: 18px;
+        letter-spacing: 0.16em;
+        color: var(--jade);
+      }
+
+      .toc a {
+        color: var(--ink);
+        text-decoration: none;
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        gap: 14px;
+        align-items: baseline;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(154, 126, 90, 0.25);
+      }
+
+      .toc .no {
+        color: var(--cinnabar);
+        font-family: var(--font-code);
+        font-size: 13px;
+      }
+
+      section {
+        margin: 0 0 72px;
+        scroll-margin-top: 40px;
+      }
+
+      .section-head {
+        display: grid;
+        grid-template-columns: 104px 1fr;
+        gap: 22px;
+        align-items: start;
+        margin-bottom: 26px;
+        border-top: 2px solid var(--night);
+        padding-top: 16px;
+      }
+
+      .section-no {
+        color: var(--cinnabar);
+        font-family: var(--font-code);
+        font-size: 34px;
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 30px;
+        line-height: 1.25;
+        letter-spacing: -0.04em;
+      }
+
+      h3 {
+        margin: 36px 0 14px;
+        font-size: 22px;
+        line-height: 1.35;
+        letter-spacing: -0.02em;
+      }
+
+      h4 {
+        margin: 24px 0 10px;
+        font-size: 17px;
+        color: var(--jade);
+      }
+
+      p {
+        margin: 0 0 14px;
+      }
+
+      .lead {
+        font-size: 18px;
+        line-height: 1.85;
+        padding: 20px 24px;
+        margin: 0 0 24px;
+        background: linear-gradient(
+          90deg,
+          rgba(181, 82, 57, 0.1),
+          rgba(215, 155, 69, 0.05)
+        );
+        border-left: 5px solid var(--cinnabar);
+      }
+
+      .source {
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 12.5px;
+        border-top: 1px dashed rgba(154, 126, 90, 0.5);
+        padding-top: 10px;
+      }
+
+      .source::before {
+        content: "数据来源：";
+        color: var(--cinnabar);
+        font-weight: 700;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 22px;
+        align-items: stretch;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      .grid-6 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .card,
+      .chart,
+      .visual-block,
+      .note-box {
+        background: rgba(255, 250, 240, 0.86);
+        border: 1px solid var(--line);
+        box-shadow: 0 12px 28px rgba(38, 28, 18, 0.06);
+      }
+
+      .card {
+        padding: 20px;
+        position: relative;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 3px;
+        background: var(--ochre);
+      }
+
+      .card h4 {
+        margin-top: 0;
+        color: var(--ink);
+      }
+
+      .metric-card {
+        padding: 18px 18px 16px;
+        border-top: 4px solid var(--jade);
+        background: var(--paper-2);
+      }
+
+      .metric-card b {
+        display: block;
+        color: var(--cinnabar);
+        font-size: 29px;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+        margin-bottom: 6px;
+      }
+
+      .metric-card span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .chart {
+        padding: 18px;
+        margin: 18px 0;
+      }
+
+      .chart-svg {
+        width: 100%;
+        height: auto;
+        display: block;
+        font-family: var(--font-cn);
+      }
+
+      .svg-title {
+        font-size: 18px;
+        fill: var(--ink);
+        font-weight: 800;
+      }
+      .svg-caption,
+      .svg-axis-label {
+        font-size: 12px;
+        fill: #6a6f68;
+      }
+      .svg-label {
+        font-size: 13px;
+        fill: var(--ink);
+        font-weight: 700;
+      }
+      .svg-label-accent {
+        fill: var(--cinnabar);
+      }
+      .svg-grid {
+        stroke: rgba(154, 126, 90, 0.28);
+        stroke-width: 1;
+      }
+      .svg-axis {
+        stroke: rgba(23, 33, 31, 0.72);
+        stroke-width: 1;
+      }
+      .svg-bar {
+        fill: url(#barGrad);
+      }
+      .svg-line {
+        fill: none;
+        stroke: var(--jade);
+        stroke-width: 4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .svg-dot {
+        fill: var(--paper-2);
+        stroke: var(--jade);
+        stroke-width: 4;
+      }
+      .svg-legend text {
+        font-size: 12px;
+        fill: var(--muted);
+      }
+      .svg-rev-build {
+        fill: #b55239;
+      }
+      .svg-rev-sub {
+        fill: #d79b45;
+      }
+      .svg-arr-line {
+        fill: none;
+        stroke: #246b5a;
+        stroke-width: 4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .svg-arr-dot {
+        fill: #fffaf0;
+        stroke: #246b5a;
+        stroke-width: 4;
+      }
+      .svg-small-dot {
+        fill: #b55239;
+        opacity: 0.85;
+      }
+      .svg-area {
+        fill: rgba(36, 107, 90, 0.12);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 18px 0;
+        background: var(--paper-2);
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        border: 1px solid var(--line);
+        padding: 10px 12px;
+        vertical-align: top;
+      }
+
+      th {
+        background: #e9dcc7;
+        color: var(--night);
+        text-align: left;
+        font-weight: 800;
+      }
+
+      tbody tr:nth-child(even) td {
+        background: rgba(233, 220, 199, 0.34);
+      }
+
+      .ladder {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0;
+      }
+
+      .ladder-row {
+        display: grid;
+        grid-template-columns: 138px 1fr;
+        gap: 12px;
+        align-items: stretch;
+      }
+
+      .ladder-key {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff8e9;
+        background: var(--night);
+        font-weight: 800;
+        letter-spacing: 0.06em;
+      }
+
+      .ladder-body {
+        padding: 16px 18px;
+        background: linear-gradient(
+          90deg,
+          rgba(36, 107, 90, 0.12),
+          rgba(215, 155, 69, 0.09)
+        );
+        border: 1px solid var(--line);
+      }
+
+      .ladder-body b {
+        color: var(--cinnabar);
+        font-size: 20px;
+      }
+
+      .flywheel-wrap {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 22px;
+        align-items: center;
+      }
+
+      .flywheel svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .policy-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .policy-step {
+        padding: 16px;
+        border-left: 4px solid var(--jade);
+        background: rgba(255, 250, 240, 0.86);
+      }
+
+      .policy-step b {
+        color: var(--cinnabar);
+      }
+
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+
+      .person-card {
+        padding: 18px;
+        min-height: 188px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 250, 240, 0.95),
+          rgba(233, 220, 199, 0.68)
+        );
+        border: 1px solid var(--line);
+        position: relative;
+      }
+
+      .person-card::after {
+        content: attr(data-degree);
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        color: var(--jade);
+        font-family: var(--font-code);
+        font-size: 12px;
+        border: 1px solid rgba(36, 107, 90, 0.36);
+        padding: 2px 7px;
+      }
+
+      .person-card h3 {
+        margin: 0 0 4px;
+        font-size: 24px;
+        color: var(--night);
+      }
+
+      .person-card .role {
+        color: var(--cinnabar);
+        font-weight: 800;
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+
+      .person-card p {
+        margin: 0;
+        font-size: 13.5px;
+        color: var(--muted);
+        line-height: 1.62;
+      }
+
+      .pain-card {
+        padding: 20px;
+        background: var(--paper-2);
+        border: 1px solid var(--line);
+        position: relative;
+        min-height: 272px;
+      }
+
+      .pain-card .pain-no {
+        font-family: var(--font-code);
+        color: rgba(181, 82, 57, 0.34);
+        font-size: 46px;
+        line-height: 1;
+        position: absolute;
+        right: 16px;
+        top: 12px;
+        font-weight: 800;
+      }
+
+      .pain-card h3 {
+        margin: 0 56px 12px 0;
+        font-size: 18px;
+      }
+
+      .pain-card .big {
+        display: block;
+        color: var(--cinnabar);
+        font-size: 24px;
+        font-weight: 850;
+        margin: 8px 0 8px;
+      }
+
+      .capability {
+        margin-top: 12px;
+        padding: 10px 12px;
+        background: rgba(36, 107, 90, 0.1);
+        color: var(--jade);
+        font-weight: 800;
+        font-size: 13px;
+      }
+
+      .journey {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        border: 1px solid var(--line);
+        background: var(--paper-2);
+        margin: 18px 0;
+      }
+
+      .journey-stage {
+        position: relative;
+        padding: 24px 22px;
+        border-right: 1px solid var(--line);
+      }
+
+      .journey-stage:last-child {
+        border-right: 0;
+      }
+      .journey-stage::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 7px;
+        background: var(--stage-color);
+      }
+
+      .journey-stage h3 {
+        margin: 0 0 12px;
+        font-size: 21px;
+      }
+
+      .journey-stage ul,
+      .clean-list {
+        margin: 0;
+        padding-left: 19px;
+      }
+
+      .journey-stage li,
+      .clean-list li {
+        margin: 6px 0;
+      }
+
+      .stack {
+        display: grid;
+        gap: 9px;
+        max-width: 760px;
+        margin: 18px auto;
+      }
+
+      .stack-layer {
+        display: grid;
+        grid-template-columns: 118px 1fr;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 18px;
+        border: 1px solid var(--line);
+        background: var(--paper-2);
+      }
+
+      .stack-layer .layer {
+        color: #fff8e9;
+        background: var(--night);
+        text-align: center;
+        padding: 8px 6px;
+        font-weight: 800;
+      }
+
+      .pipeline {
+        display: grid;
+        grid-template-columns: 1fr 34px 1fr 34px 1fr;
+        gap: 10px;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      .pipe-card {
+        min-height: 126px;
+        padding: 18px;
+        background: var(--paper-2);
+        border: 1px solid var(--line);
+      }
+
+      .pipe-card h4 {
+        margin-top: 0;
+        color: var(--ink);
+      }
+      .arrow {
+        text-align: center;
+        color: var(--cinnabar);
+        font-size: 30px;
+        font-weight: 900;
+      }
+
+      .flywheel-data {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+        margin-top: 16px;
+      }
+
+      .data-node {
+        padding: 15px;
+        background: rgba(36, 107, 90, 0.1);
+        border: 1px solid rgba(36, 107, 90, 0.22);
+        color: var(--night);
+        font-weight: 700;
+      }
+
+      .comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        border: 1px solid var(--line);
+        background: var(--paper-2);
+        margin: 20px 0;
+      }
+
+      .compare-col {
+        padding: 24px;
+      }
+      .compare-col:first-child {
+        border-right: 1px solid var(--line);
+      }
+      .compare-col h3 {
+        margin-top: 0;
+      }
+      .compare-col ul {
+        padding-left: 20px;
+        margin-bottom: 0;
+      }
+      .compare-col li {
+        margin: 10px 0;
+      }
+
+      .funnel {
+        display: grid;
+        gap: 8px;
+        margin: 22px auto;
+        max-width: 960px;
+        width: 100%;
+      }
+
+      .funnel-row {
+        margin: auto;
+        min-height: 70px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        color: #fff8e9;
+        font-weight: 800;
+        background: var(--funnel-color);
+        border: 1px solid rgba(23, 33, 31, 0.22);
+        padding: 12px 46px;
+        line-height: 1.55;
+        font-size: 14.5px;
+        clip-path: polygon(3% 0%, 97% 0%, 93% 100%, 7% 100%);
+      }
+
+      .pricing {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 20px 0;
+      }
+
+      .price-card {
+        background: var(--paper-2);
+        border: 1px solid var(--line);
+        padding: 22px;
+        position: relative;
+      }
+
+      .price-card.featured {
+        border: 2px solid var(--cinnabar);
+        transform: translateY(-4px);
+      }
+
+      .price-card h3 {
+        margin-top: 0;
+      }
+      .price-card .price {
+        color: var(--cinnabar);
+        font-size: 30px;
+        font-weight: 850;
+        letter-spacing: -0.04em;
+        margin: 12px 0;
+      }
+
+      .price-card dl {
+        display: grid;
+        grid-template-columns: 86px 1fr;
+        gap: 7px 10px;
+        margin: 0;
+        font-size: 13.5px;
+      }
+
+      .price-card dt {
+        color: var(--muted);
+      }
+      .price-card dd {
+        margin: 0;
+        font-weight: 700;
+      }
+
+      .market-rings {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 28px;
+        align-items: center;
+        margin: 20px 0;
+        padding: 24px;
+        background: var(--paper-2);
+        border: 1px solid var(--line);
+      }
+
+      .ring {
+        position: relative;
+        width: 330px;
+        height: 330px;
+        border-radius: 50%;
+        background:
+          radial-gradient(
+            circle at center,
+            var(--paper-2) 0 29%,
+            transparent 30%
+          ),
+          radial-gradient(
+            circle at center,
+            rgba(181, 82, 57, 0.28) 0 47%,
+            transparent 48%
+          ),
+          radial-gradient(
+            circle at center,
+            rgba(215, 155, 69, 0.28) 0 68%,
+            transparent 69%
+          ),
+          radial-gradient(circle at center, rgba(36, 107, 90, 0.24) 0 100%);
+        border: 1px solid var(--line);
+        margin: auto;
+      }
+
+      .ring span {
+        position: absolute;
+        display: block;
+        padding: 5px 8px;
+        background: var(--night);
+        color: #fff8e9;
+        font-size: 12px;
+        font-weight: 800;
+        border-radius: 2px;
+      }
+
+      .ring .tam {
+        top: 18px;
+        left: 119px;
+      }
+      .ring .sam {
+        top: 82px;
+        left: 114px;
+        background: var(--jade);
+      }
+      .ring .som {
+        top: 148px;
+        left: 119px;
+        background: var(--cinnabar);
+      }
+
+      .ring-notes {
+        display: grid;
+        gap: 14px;
+      }
+
+      .ring-note {
+        padding: 14px 16px;
+        border-left: 4px solid var(--ring-color);
+        background: rgba(247, 240, 227, 0.72);
+      }
+
+      .ring-note b {
+        font-size: 20px;
+        color: var(--ring-color);
+      }
+
+      .use-pie {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 26px;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      .pie {
+        width: 270px;
+        height: 270px;
+        border-radius: 50%;
+        background: conic-gradient(
+          #b55239 0 45%,
+          #d79b45 45% 60%,
+          #246b5a 60% 75%,
+          #2d7e89 75% 93%,
+          #7d6d59 93% 100%
+        );
+        position: relative;
+        margin: auto;
+        border: 1px solid var(--line-dark);
+      }
+
+      .pie::after {
+        content: "400万\A";
+        white-space: pre;
+        position: absolute;
+        inset: 74px;
+        border-radius: 50%;
+        background: var(--paper-2);
+        display: grid;
+        place-items: center;
+        text-align: center;
+        color: var(--night);
+        font-weight: 850;
+        font-size: 24px;
+        line-height: 1.25;
+      }
+
+      .legend-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .legend-item {
+        display: grid;
+        grid-template-columns: 18px 88px 1fr;
+        gap: 10px;
+        align-items: start;
+        padding-bottom: 9px;
+        border-bottom: 1px dashed rgba(154, 126, 90, 0.35);
+      }
+
+      .swatch {
+        width: 18px;
+        height: 18px;
+        background: var(--swatch);
+        margin-top: 5px;
+      }
+
+      .timeline {
+        position: relative;
+        display: grid;
+        gap: 16px;
+        margin: 24px 0;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 25px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--line-dark);
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 54px 1fr;
+        gap: 16px;
+        align-items: start;
+        position: relative;
+      }
+
+      .timeline-dot {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--night);
+        color: #fff8e9;
+        display: grid;
+        place-items: center;
+        font-family: var(--font-code);
+        font-weight: 800;
+        z-index: 1;
+      }
+
+      .timeline-body {
+        background: var(--paper-2);
+        border: 1px solid var(--line);
+        padding: 18px 20px;
+      }
+
+      .timeline-body h3 {
+        margin-top: 0;
+      }
+
+      .value-strip {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+        border: 1px solid var(--line);
+        background: var(--paper-2);
+      }
+
+      .value-item {
+        padding: 20px;
+        border-right: 1px solid var(--line);
+      }
+
+      .value-item:last-child {
+        border-right: 0;
+      }
+      .value-item b {
+        color: var(--cinnabar);
+        display: block;
+        font-size: 24px;
+      }
+
+      .footer {
+        padding: 30px 76px;
+        background: var(--night);
+        color: #e9dcc7;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        font-size: 13px;
+      }
+
+      code,
+      pre {
+        font-family: var(--font-code);
+      }
+
+      pre {
+        background: #182823;
+        color: #f6e9d4;
+        padding: 18px;
+        overflow: auto;
+        border: 1px solid rgba(231, 190, 120, 0.28);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+
+      .note-box {
+        padding: 18px 20px;
+        margin: 18px 0;
+        border-left: 5px solid var(--jade);
+      }
+
+      .note-box strong {
+        color: var(--jade);
+      }
+
+      @media screen and (max-width: 900px) {
+        .page-wrapper {
+          margin: 0;
+        }
+        .cover,
+        .content {
+          padding: 42px 24px;
+        }
+        .cover,
+        .grid-2,
+        .flywheel-wrap,
+        .market-rings,
+        .use-pie {
+          grid-template-columns: 1fr;
+        }
+        .toc,
+        .team-grid,
+        .grid-3,
+        .grid-4,
+        .grid-6,
+        .pricing,
+        .journey,
+        .value-strip {
+          grid-template-columns: 1fr;
+        }
+        .section-head {
+          grid-template-columns: 1fr;
+        }
+        .pipeline {
+          grid-template-columns: 1fr;
+        }
+        .arrow {
+          transform: rotate(90deg);
+        }
+        .footer {
+          padding: 24px;
+          flex-direction: column;
+        }
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 12mm 12mm 13mm 12mm;
+        }
+
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        html,
+        body {
+          width: auto !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          background: #fff !important;
+          font-size: 11.2px !important;
+          line-height: 1.42 !important;
+        }
+
+        .page-wrapper {
+          width: 100% !important;
+          max-width: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: 0 !important;
+          box-shadow: none !important;
+          overflow: visible !important;
+          background: #fff !important;
+        }
+
+        .content {
+          padding: 0 !important;
+          background: #fff !important;
+        }
+
+        /* 封面、目录独立成页 */
+        .cover {
+          min-height: 270mm !important;
+          padding: 18mm 13mm 14mm !important;
+          break-after: page;
+          page-break-after: always;
+        }
+
+        .cover::before {
+          inset: 12mm;
+        }
+
+        .cover::after {
+          opacity: 0.42;
+        }
+
+        .cover-metric {
+          padding: 12px !important;
+        }
+
+        .cover-metric b {
+          font-size: 23px !important;
+        }
+
+        .toc {
+          min-height: 255mm !important;
+          margin: 0 !important;
+          padding: 14mm 10mm !important;
+          break-after: page;
+          page-break-after: always;
+          box-shadow: none !important;
+        }
+
+        .toc a {
+          padding: 8px 0 !important;
+        }
+
+        /* 仍按一级章节起页，但社会价值并入上一页，避免尾页过空 */
+        .print-break-before {
+          break-before: page;
+          page-break-before: always;
+        }
+
+        #social.print-break-before {
+          break-before: auto !important;
+          page-break-before: auto !important;
+          margin-top: 5mm !important;
+        }
+
+        .print-break-after {
+          break-after: page;
+          page-break-after: always;
+        }
+
+        .print-avoid {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .print-split {
+          break-inside: auto !important;
+          page-break-inside: auto !important;
+        }
+
+        section {
+          margin: 0 0 6mm !important;
+          padding: 0 !important;
+          break-inside: auto;
+          page-break-inside: auto;
+        }
+
+        .section-head {
+          display: grid !important;
+          grid-template-columns: 18mm 1fr !important;
+          gap: 5mm !important;
+          align-items: start !important;
+          margin-bottom: 4mm !important;
+          padding-top: 3mm !important;
+          break-after: avoid;
+          page-break-after: avoid;
+        }
+
+        .section-no {
+          font-size: 22px !important;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+          break-after: avoid;
+          page-break-after: avoid;
+        }
+
+        h1 {
+          font-size: 52px !important;
+        }
+
+        h2 {
+          font-size: 22px !important;
+        }
+
+        h3 {
+          font-size: 15px !important;
+          margin: 4.6mm 0 2.2mm !important;
+        }
+
+        h4 {
+          font-size: 12.5px !important;
+          margin: 3.6mm 0 1.8mm !important;
+        }
+
+        p {
+          margin: 0 0 2mm !important;
+          orphans: 3;
+          widows: 3;
+        }
+
+        .lead {
+          font-size: 12px !important;
+          line-height: 1.46 !important;
+          padding: 3.5mm 4.5mm !important;
+          margin-bottom: 4mm !important;
+        }
+
+        .source {
+          font-size: 8.3px !important;
+          line-height: 1.3 !important;
+          margin-top: 2.3mm !important;
+          padding-top: 1.6mm !important;
+        }
+
+        table {
+          width: 100%;
+          font-size: 8.8px !important;
+          line-height: 1.25 !important;
+          margin: 2.6mm 0 !important;
+          border-collapse: collapse;
+          break-inside: auto;
+          page-break-inside: auto;
+        }
+
+        thead {
+          display: table-header-group;
+        }
+
+        tr {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        th,
+        td {
+          padding: 2.5px 4px !important;
+        }
+
+        .card,
+        .metric-card,
+        .person-card,
+        .pain-card,
+        .price-card,
+        .timeline-item,
+        .data-node,
+        .legend-item,
+        .ring-note,
+        .policy-step {
+          break-inside: avoid;
+          page-break-inside: avoid;
+          box-shadow: none !important;
+        }
+
+        .chart,
+        .visual-block,
+        .note-box,
+        .comparison,
+        .market-rings,
+        .use-pie,
+        .pipeline,
+        .journey,
+        .funnel {
+          box-shadow: none !important;
+        }
+
+        .chart {
+          padding: 3mm !important;
+          margin: 3mm 0 !important;
+        }
+
+        .chart-svg {
+          max-height: 118mm !important;
+        }
+
+        .grid-4 {
+          grid-template-columns: repeat(4, 1fr) !important;
+          gap: 2.5mm !important;
+        }
+
+        .grid-3,
+        .pricing {
+          grid-template-columns: repeat(3, 1fr) !important;
+          gap: 2.8mm !important;
+        }
+
+        .team-grid {
+          grid-template-columns: repeat(4, 1fr) !important;
+          gap: 2.4mm !important;
+        }
+
+        .grid-6 {
+          grid-template-columns: repeat(3, 1fr) !important;
+          gap: 2.8mm !important;
+        }
+
+        .metric-card {
+          padding: 3.5mm !important;
+        }
+
+        .metric-card b {
+          font-size: 18px !important;
+        }
+
+        .team-grid {
+          grid-template-columns: repeat(2, 1fr) !important;
+          gap: 4mm !important;
+        }
+
+        .person-card {
+          min-height: 39mm !important;
+          padding: 4.2mm !important;
+        }
+
+        .person-card h3 {
+          font-size: 18px !important;
+          margin: 0 0 1mm !important;
+        }
+
+        .person-card .role,
+        .person-card p {
+          font-size: 10.2px !important;
+          line-height: 1.45 !important;
+        }
+
+        .pain-card {
+          min-height: 49mm !important;
+          padding: 3.6mm !important;
+        }
+
+        .pain-card h3 {
+          font-size: 12.3px !important;
+          margin: 0 11mm 1.5mm 0 !important;
+        }
+
+        .pain-card .pain-no {
+          font-size: 28px !important;
+          right: 3.5mm !important;
+          top: 2.5mm !important;
+        }
+
+        .pain-card .big {
+          font-size: 17px !important;
+          margin: 1.5mm 0 !important;
+        }
+
+        .pain-card p {
+          font-size: 9px !important;
+          line-height: 1.35 !important;
+        }
+
+        .capability {
+          font-size: 8.6px !important;
+          padding: 1.8mm !important;
+          margin-top: 1.8mm !important;
+        }
+
+        .ladder {
+          gap: 2mm !important;
+          margin: 3mm 0 !important;
+        }
+
+        .ladder-row {
+          grid-template-columns: 28mm 1fr !important;
+          gap: 2mm !important;
+        }
+
+        .ladder-key {
+          font-size: 10px !important;
+        }
+
+        .ladder-body {
+          padding: 2.6mm 3mm !important;
+          font-size: 10px !important;
+          line-height: 1.35 !important;
+        }
+
+        .ladder-body b {
+          font-size: 13.5px !important;
+        }
+
+        .flywheel-wrap {
+          display: grid !important;
+          grid-template-columns: 0.9fr 1.1fr !important;
+          gap: 4.5mm !important;
+          align-items: center !important;
+        }
+
+        .flywheel svg {
+          max-height: 100mm !important;
+        }
+
+        .policy-list {
+          gap: 2mm !important;
+        }
+
+        .policy-step {
+          padding: 2.6mm !important;
+          font-size: 9.5px !important;
+          line-height: 1.35 !important;
+        }
+
+        .journey {
+          grid-template-columns: repeat(3, 1fr) !important;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .journey-stage {
+          padding: 4mm 3.5mm !important;
+        }
+
+        .journey-stage h3 {
+          font-size: 13px !important;
+          margin: 0 0 2mm !important;
+        }
+
+        .journey-stage li {
+          font-size: 9.5px !important;
+          margin: 1mm 0 !important;
+        }
+
+        .stack {
+          gap: 1.8mm !important;
+          margin: 3mm auto !important;
+          max-width: 100% !important;
+        }
+
+        .stack-layer {
+          grid-template-columns: 25mm 1fr !important;
+          gap: 3mm !important;
+          padding: 2.6mm 3mm !important;
+          font-size: 9.5px !important;
+        }
+
+        .pipeline {
+          grid-template-columns: 1fr 5mm 1fr 5mm 1fr !important;
+          gap: 1.8mm !important;
+          margin: 3mm 0 !important;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .pipe-card {
+          min-height: 30mm !important;
+          padding: 3mm !important;
+          font-size: 9px !important;
+        }
+
+        .pipe-card h4 {
+          font-size: 11px !important;
+          margin-top: 0 !important;
+        }
+
+        .arrow {
+          transform: none !important;
+          font-size: 16px !important;
+        }
+
+        .note-box {
+          padding: 3mm 3.5mm !important;
+          margin: 3mm 0 !important;
+          font-size: 9.2px !important;
+          line-height: 1.35 !important;
+        }
+
+        .flywheel-data {
+          grid-template-columns: repeat(3, 1fr) !important;
+          gap: 2mm !important;
+          margin-top: 2.5mm !important;
+        }
+
+        .data-node {
+          padding: 2.5mm !important;
+          font-size: 9px !important;
+        }
+
+        .comparison {
+          grid-template-columns: 1fr 1fr !important;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .compare-col {
+          padding: 4mm !important;
+        }
+
+        .compare-col h3 {
+          font-size: 14px !important;
+        }
+
+        .compare-col li {
+          font-size: 9.8px !important;
+          line-height: 1.4 !important;
+          margin: 1.8mm 0 !important;
+        }
+
+        .funnel {
+          gap: 1.8mm !important;
+          margin: 3mm auto !important;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .funnel-row {
+          min-height: 14mm !important;
+          padding: 2.4mm 13mm !important;
+          font-size: 10.5px !important;
+          line-height: 1.35 !important;
+        }
+
+        .funnel-row strong {
+          display: block;
+          font-size: 11.5px !important;
+        }
+
+        .funnel-row span {
+          display: block;
+          font-size: 9.5px !important;
+        }
+
+        .price-card {
+          padding: 4mm !important;
+        }
+
+        .price-card h3 {
+          font-size: 14px !important;
+          margin: 0 !important;
+        }
+
+        .price-card .price {
+          font-size: 20px !important;
+          margin: 2mm 0 !important;
+        }
+
+        .price-card dl {
+          grid-template-columns: 18mm 1fr !important;
+          gap: 1mm 2mm !important;
+          font-size: 9.2px !important;
+        }
+
+        .market-rings {
+          grid-template-columns: 68mm 1fr !important;
+          gap: 4mm !important;
+          padding: 4mm !important;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .ring {
+          width: 62mm !important;
+          height: 62mm !important;
+        }
+
+        .ring span {
+          font-size: 8.5px !important;
+          padding: 1mm 1.5mm !important;
+        }
+
+        .ring .tam {
+          top: 4mm !important;
+          left: 21mm !important;
+        }
+
+        .ring .sam {
+          top: 17mm !important;
+          left: 20mm !important;
+        }
+
+        .ring .som {
+          top: 30mm !important;
+          left: 20mm !important;
+        }
+
+        .ring-notes {
+          gap: 2mm !important;
+        }
+
+        .ring-note {
+          padding: 2.5mm 3mm !important;
+          font-size: 9.2px !important;
+          line-height: 1.35 !important;
+        }
+
+        .ring-note b {
+          font-size: 12px !important;
+        }
+
+        .use-pie {
+          grid-template-columns: 62mm 1fr !important;
+          gap: 4mm !important;
+          margin: 3mm 0 !important;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .pie {
+          width: 54mm !important;
+          height: 54mm !important;
+        }
+
+        .pie::after {
+          inset: 16mm !important;
+          font-size: 16px !important;
+        }
+
+        .legend-list {
+          gap: 1.8mm !important;
+        }
+
+        .legend-item {
+          grid-template-columns: 4mm 20mm 1fr !important;
+          gap: 2mm !important;
+          padding-bottom: 1.8mm !important;
+          font-size: 9px !important;
+        }
+
+        .swatch {
+          width: 4mm !important;
+          height: 4mm !important;
+        }
+
+        .timeline {
+          gap: 3mm !important;
+          margin: 3mm 0 !important;
+        }
+
+        .timeline-item {
+          grid-template-columns: 12mm 1fr !important;
+          gap: 3mm !important;
+        }
+
+        .timeline-dot {
+          width: 11mm !important;
+          height: 11mm !important;
+          font-size: 8px !important;
+        }
+
+        .timeline-body {
+          padding: 3mm !important;
+        }
+
+        .timeline-body h3 {
+          font-size: 12px !important;
+          margin: 0 0 1.5mm !important;
+        }
+
+        .timeline-body p {
+          font-size: 9.2px !important;
+          line-height: 1.35 !important;
+        }
+
+        .value-strip {
+          grid-template-columns: repeat(4, 1fr) !important;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .value-item {
+          padding: 3mm !important;
+          font-size: 9.5px !important;
+        }
+
+        .value-item b {
+          font-size: 17px !important;
+        }
+
+        #competition.print-break-before {
+          break-before: auto !important;
+          page-break-before: auto !important;
+          margin-top: 5mm !important;
+        }
+
+        .footer {
+          display: none !important;
+        }
+      }
+    </style>
+
+    <style id="print-pagination-final">
+      /* Print-only pagination patch: keep browser/screen layout unchanged. */
+      @media print {
+        @page {
+          size: A4 portrait;
+          margin: 12mm 12mm 13mm 12mm;
+        }
+
+        /* Keep major chapters from starting at the bottom of a previous page. */
+        #competition.print-break-before,
+        #social.print-break-before {
+          break-before: page !important;
+          page-break-before: always !important;
+          margin-top: 0 !important;
+        }
+
+        /* Slightly compact the long solution page so the data-flywheel block stays with its context. */
+        #solution .journey-stage {
+          padding: 3mm 3mm !important;
+        }
+
+        #solution .journey-stage h3 {
+          font-size: 12.2px !important;
+          margin: 0 0 1.3mm !important;
+        }
+
+        #solution .journey-stage li {
+          font-size: 8.7px !important;
+          line-height: 1.22 !important;
+          margin: 0.6mm 0 !important;
+        }
+
+        #solution .stack {
+          gap: 1.2mm !important;
+          margin: 2.2mm auto !important;
+        }
+
+        #solution .stack-layer {
+          grid-template-columns: 22mm 1fr !important;
+          padding: 1.9mm 2.4mm !important;
+          font-size: 8.8px !important;
+          line-height: 1.25 !important;
+        }
+
+        #solution table {
+          font-size: 7.7px !important;
+          line-height: 1.12 !important;
+          margin: 1.8mm 0 !important;
+        }
+
+        #solution th,
+        #solution td {
+          padding: 1.6px 3px !important;
+        }
+
+        #solution .pipeline {
+          gap: 1.2mm !important;
+          margin: 2mm 0 !important;
+        }
+
+        #solution .pipe-card {
+          min-height: 24mm !important;
+          padding: 2.2mm !important;
+          font-size: 8.1px !important;
+          line-height: 1.22 !important;
+        }
+
+        #solution .pipe-card h4 {
+          font-size: 10.4px !important;
+          margin-bottom: 1mm !important;
+        }
+
+        #solution .note-box {
+          padding: 2.4mm 3mm !important;
+          margin: 2mm 0 !important;
+          font-size: 8.2px !important;
+          line-height: 1.25 !important;
+          break-inside: avoid !important;
+          page-break-inside: avoid !important;
+        }
+
+        #solution .flywheel-data {
+          grid-template-columns: repeat(3, 1fr) !important;
+          gap: 1.2mm !important;
+          margin-top: 1.6mm !important;
+          break-inside: avoid !important;
+          page-break-inside: avoid !important;
+        }
+
+        #solution .data-node {
+          padding: 1.8mm !important;
+          font-size: 8px !important;
+          line-height: 1.15 !important;
+        }
+
+        /* Product module table should start with its own heading instead of becoming a headless table fragment. */
+        #solution > h3:nth-of-type(3) {
+          break-before: page !important;
+          page-break-before: always !important;
+          margin-top: 0 !important;
+        }
+
+        #business .market-rings,
+        #financing .timeline,
+        #social .value-strip {
+          break-inside: avoid !important;
+          page-break-inside: avoid !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page-wrapper">
+      <header class="cover">
+        <div class="cover-main">
+          <div class="eyebrow">Business Plan · AI + Cultural Tourism</div>
+          <h1>文旅AI+<br />垂域模型一体化解决方案</h1>
+          <p class="subtitle">让文化资源持续创造价值</p>
+          <div class="meta-grid">
+            <div class="meta-item"><strong>绘世万相</strong>团队</div>
+            <div class="meta-item"><strong>季豪杰</strong>主讲人</div>
+            <div class="meta-item"><strong>2026年7月</strong>商业计划书</div>
+          </div>
+        </div>
+        <aside class="cover-panel">
+          <div class="cover-metrics">
+            <div class="cover-metric">
+              <b>22亿元/年</b><span>TAM，ARR口径</span>
+            </div>
+            <div class="cover-metric">
+              <b>30天</b><span>模块化快速上线周期</span>
+            </div>
+            <div class="cover-metric">
+              <b>5–25万元</b><span>建设费切入区间</span>
+            </div>
+            <div class="cover-metric">
+              <b>7,779万元</b><span>三年累计确认收入测算</span>
+            </div>
+          </div>
+        </aside>
+      </header>
+
+      <div class="content">
+        <nav class="toc" aria-label="目录">
+          <h2>DOCUMENT MAP</h2>
+          <a href="#market"
+            ><span class="no">01</span
+            ><span>市场分析：文旅基础盘、AI规模化、政策窗口</span></a
+          >
+          <a href="#team"
+            ><span class="no">02</span
+            ><span>团队成员：技术、文博、商务与财务组合</span></a
+          >
+          <a href="#pain"
+            ><span class="no">03</span
+            ><span>用户痛点：四重夹击与六类缺口</span></a
+          >
+          <a href="#solution"
+            ><span class="no">04</span
+            ><span>解决游客入口、机构后台与可信生成</span></a
+          >
+          <a href="#competition"
+            ><span class="no">05</span
+            ><span>竞品分析：头部标杆与中小机构空白</span></a
+          >
+          <a href="#business"
+            ><span class="no">06</span
+            ><span>商业模式：建设费、订阅、扩展与内容服务</span></a
+          >
+          <a href="#financing"
+            ><span class="no">07</span
+            ><span>融资计划：种子期资金用途与跑道</span></a
+          >
+          <a href="#social"
+            ><span class="no">08</span
+            ><span>社会价值：就业、校企合作与复合型人才</span></a
+          >
+        </nav>
+
+        <section id="market" class="print-break-before">
+          <div class="section-head">
+            <div class="section-no">01</div>
+            <div>
+              <h2>市场分析</h2>
+              <p class="lead">
+                中国文旅市场已形成万亿级消费、十亿级客流、数万级场景的基础盘；AI
+                已跨过技术可行性验证阶段，政策端形成“方向—场景—资金—合规”的闭环，AI+文旅进入可采购、可申报、可复制的落地窗口。
+              </p>
+            </div>
+          </div>
+
+          <h3>1.1 文旅市场：高客流、高消费、可规模化</h3>
+          <div class="chart">
+            <svg
+              class="chart-svg"
+              viewBox="0 0 760 360"
+              role="img"
+              aria-label="2023至2025年国内居民出游人次与出游总花费组合图"
+            >
+              <defs>
+                <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#B55239" />
+                  <stop offset="100%" stop-color="#E0A145" />
+                </linearGradient>
+              </defs>
+              <text x="70" y="25" class="svg-title">国内文旅消费基础盘</text>
+              <text x="678" y="25" class="svg-caption" text-anchor="end">
+                柱：亿人次 · 线：万亿元
+              </text>
+              <line x1="70" y1="300.0" x2="678" y2="300.0" class="svg-grid" />
+              <line x1="70" y1="237.0" x2="678" y2="237.0" class="svg-grid" />
+              <line x1="70" y1="174.0" x2="678" y2="174.0" class="svg-grid" />
+              <line x1="70" y1="111.0" x2="678" y2="111.0" class="svg-grid" />
+              <line x1="70" y1="48.0" x2="678" y2="48.0" class="svg-grid" />
+              <line x1="70" y1="300" x2="678" y2="300" class="svg-axis" />
+              <line x1="70" y1="48" x2="70" y2="300" class="svg-axis" />
+              <line x1="678" y1="48" x2="678" y2="300" class="svg-axis" />
+              <text x="58" y="304.0" class="svg-axis-label" text-anchor="end">
+                0
+              </text>
+              <text x="58" y="241.0" class="svg-axis-label" text-anchor="end">
+                17.5
+              </text>
+              <text x="58" y="178.0" class="svg-axis-label" text-anchor="end">
+                35
+              </text>
+              <text x="58" y="115.0" class="svg-axis-label" text-anchor="end">
+                52.5
+              </text>
+              <text x="58" y="52.0" class="svg-axis-label" text-anchor="end">
+                70
+              </text>
+              <text x="690" y="304.0" class="svg-axis-label">0</text>
+              <text x="690" y="241.0" class="svg-axis-label">1.75</text>
+              <text x="690" y="178.0" class="svg-axis-label">3.5</text>
+              <text x="690" y="115.0" class="svg-axis-label">5.25</text>
+              <text x="690" y="52.0" class="svg-axis-label">7</text>
+              <rect
+                x="137.3"
+                y="124.0"
+                width="68"
+                height="176.0"
+                rx="2"
+                class="svg-bar"
+              />
+              <text x="171.3" y="150.0" class="svg-label" text-anchor="middle">
+                48.9亿
+              </text>
+              <text
+                x="171.3"
+                y="318"
+                class="svg-axis-label"
+                text-anchor="middle"
+              >
+                2023
+              </text>
+              <rect
+                x="340.0"
+                y="97.7"
+                width="68"
+                height="202.3"
+                rx="2"
+                class="svg-bar"
+              />
+              <text x="374.0" y="120" class="svg-label" text-anchor="middle">
+                56.2亿
+              </text>
+              <text
+                x="374.0"
+                y="318"
+                class="svg-axis-label"
+                text-anchor="middle"
+              >
+                2024
+              </text>
+              <rect
+                x="542.7"
+                y="65.2"
+                width="68"
+                height="234.8"
+                rx="2"
+                class="svg-bar"
+              />
+              <text x="576.7" y="100" class="svg-label" text-anchor="middle">
+                65.22亿
+              </text>
+              <text
+                x="576.7"
+                y="318"
+                class="svg-axis-label"
+                text-anchor="middle"
+              >
+                2025
+              </text>
+              <path
+                d="M 171.3,123.6 L 374.0,91.2 L 576.7,73.2"
+                class="svg-line"
+              />
+              <circle cx="171.3" cy="123.6" r="6" class="svg-dot" />
+              <text
+                x="171.3"
+                y="109.6"
+                class="svg-label svg-label-accent"
+                text-anchor="middle"
+              >
+                4.9万亿
+              </text>
+              <circle cx="374.0" cy="91.2" r="6" class="svg-dot" />
+              <text
+                x="374.0"
+                y="77.2"
+                class="svg-label svg-label-accent"
+                text-anchor="middle"
+              >
+                5.8万亿
+              </text>
+              <circle cx="576.7" cy="73.2" r="6" class="svg-dot" />
+              <text
+                x="576.7"
+                y="61"
+                class="svg-label svg-label-accent"
+                text-anchor="middle"
+              >
+                6.3万亿
+              </text>
+              <g class="svg-legend" transform="translate(70,326)">
+                <rect width="16" height="8" class="svg-bar"></rect>
+                <text x="24" y="8">国内居民出游人次</text>
+                <line x1="188" y1="4" x2="212" y2="4" class="svg-line"></line>
+                <circle cx="200" cy="4" r="4" class="svg-dot"></circle>
+                <text x="222" y="8">国内居民出游总花费</text>
+              </g>
+            </svg>
+          </div>
+          <div class="grid-4">
+            <div class="metric-card">
+              <b>16,994个</b><span>A级景区数量</span>
+            </div>
+            <div class="metric-card">
+              <b>75.1亿人次</b><span>A级景区年接待人次</span>
+            </div>
+            <div class="metric-card">
+              <b>15.5亿人次</b><span>文物机构年观众</span>
+            </div>
+            <div class="metric-card">
+              <b>5.15亿人</b><span>在线旅行预订用户</span>
+            </div>
+          </div>
+          <p>
+            2025年出游人均消费966.26元，同比下降5.56%，呈现“量增价缓”的结构性特征：客流高速增长，但单客价值下滑，机构普遍面临提升二次消费转化的压力。景区、博物馆、文物机构存在高频客流、内容讲解、导览服务、研学教育和二次消费转化需求，是
+            AI 应用的天然落地场景。
+          </p>
+          <p class="source">
+            文化和旅游部《2025年文化和旅游发展统计公报》；中国科技网（引文旅部2025年数据）；钛媒体（引文旅部数据）。
+          </p>
+
+          <h3>1.2 AI发展：从技术验证进入规模化应用</h3>
+          <div class="ladder visual-block">
+            <div class="ladder-row">
+              <div class="ladder-key">对客落地</div>
+              <div class="ladder-body">
+                <b>超300个大模型发布</b>，公有云大模型年调用约2,000万亿
+                Token，应用能力进入高频真实场景。
+              </div>
+            </div>
+            <div class="ladder-row">
+              <div class="ladder-key">应用普及</div>
+              <div class="ladder-body">
+                生成式 AI 用户普及率从2024年底低于20%，到2025年6月达
+                <b>36.5%</b>，用户规模 <b>5.15亿人</b>。
+              </div>
+            </div>
+            <div class="ladder-row">
+              <div class="ladder-key">算力底座</div>
+              <div class="ladder-body">
+                全国算力总规模 <b>369.5 EFLOPS</b>，全球占比超过
+                <b>28%</b>，为大模型规模化调用提供基础设施。
+              </div>
+            </div>
+            <div class="ladder-row">
+              <div class="ladder-key">产业规模</div>
+              <div class="ladder-body">
+                AI 核心产业规模2024年已突破 <b>9000亿元</b>，同比增长
+                <b>24%</b>，2028E 达 <b>1.8万亿元</b>。
+              </div>
+            </div>
+          </div>
+          <p class="source">
+            中国信息通信研究院《人工智能产业发展研究报告（2025年）》；艾瑞咨询《中国人工智能产业研究报告》；国家数据局《数字中国发展报告（2025）》。
+          </p>
+
+          <h3>1.3 政策依据：AI+文旅进入可落地窗口期</h3>
+          <div class="flywheel-wrap">
+            <div class="flywheel visual-block">
+              <svg
+                viewBox="0 0 420 420"
+                role="img"
+                aria-label="政策飞轮图：方向明确、场景点名、资金与采购通道、试点已落地"
+              >
+                <defs>
+                  <marker
+                    id="arrowHead"
+                    markerWidth="8"
+                    markerHeight="8"
+                    refX="6"
+                    refY="3"
+                    orient="auto"
+                  >
+                    <path d="M0,0 L0,6 L7,3 z" fill="#b55239"></path>
+                  </marker>
+                </defs>
+                <circle
+                  cx="210"
+                  cy="210"
+                  r="98"
+                  fill="#fffaf0"
+                  stroke="#9a7e5a"
+                ></circle>
+                <text
+                  x="210"
+                  y="188"
+                  text-anchor="middle"
+                  font-size="18"
+                  font-weight="800"
+                  fill="#17211f"
+                >
+                  AI+文旅
+                </text>
+                <text
+                  x="210"
+                  y="216"
+                  text-anchor="middle"
+                  font-size="14"
+                  fill="#246b5a"
+                >
+                  从政策鼓励方向
+                </text>
+                <text
+                  x="210"
+                  y="240"
+                  text-anchor="middle"
+                  font-size="14"
+                  fill="#246b5a"
+                >
+                  进入可采购落地阶段
+                </text>
+                <g fill="#142320" stroke="#d79b45" stroke-width="2">
+                  <circle cx="210" cy="54" r="50"></circle>
+                  <circle cx="366" cy="210" r="50"></circle>
+                  <circle cx="210" cy="366" r="50"></circle>
+                  <circle cx="54" cy="210" r="50"></circle>
+                </g>
+                <g
+                  fill="#fff8e9"
+                  font-size="14"
+                  font-weight="800"
+                  text-anchor="middle"
+                >
+                  <text x="210" y="50">方向明确</text>
+                  <text x="210" y="72">国家推动</text>
+                  <text x="366" y="206">场景点名</text>
+                  <text x="366" y="228">助手应用</text>
+                  <text x="210" y="362">资金采购</text>
+                  <text x="210" y="384">落地抓手</text>
+                  <text x="54" y="206">试点落地</text>
+                  <text x="54" y="228">示范效应</text>
+                </g>
+                <path
+                  d="M248 73 C315 95 352 137 363 180"
+                  fill="none"
+                  stroke="#b55239"
+                  stroke-width="4"
+                  marker-end="url(#arrowHead)"
+                ></path>
+                <path
+                  d="M347 248 C325 315 283 352 240 363"
+                  fill="none"
+                  stroke="#b55239"
+                  stroke-width="4"
+                  marker-end="url(#arrowHead)"
+                ></path>
+                <path
+                  d="M172 347 C105 325 68 283 57 240"
+                  fill="none"
+                  stroke="#b55239"
+                  stroke-width="4"
+                  marker-end="url(#arrowHead)"
+                ></path>
+                <path
+                  d="M73 172 C95 105 137 68 180 57"
+                  fill="none"
+                  stroke="#b55239"
+                  stroke-width="4"
+                  marker-end="url(#arrowHead)"
+                ></path>
+              </svg>
+            </div>
+            <div class="policy-list">
+              <div class="policy-step">
+                <b>方向明确：</b
+                >“十五五”规划建议、二十届三中全会决定明确推动文化科技融合、文化数智化、旅游强国建设。
+              </div>
+              <div class="policy-step">
+                <b>场景点名：</b
+                >“数据要素×”三年行动计划、智慧旅游创新发展行动计划直接提出公共文化大模型、文化知识数据集、智慧旅游助手类应用。
+              </div>
+              <div class="policy-step">
+                <b>资金与采购通道：</b
+                >促进服务消费高质量发展意见、文旅领域设备更新方案、合作创新采购机制、“人工智能+文化和旅游”应用试点形成落地抓手。
+              </div>
+              <div class="policy-step">
+                <b>试点已落地：</b
+                >故宫×火山引擎、首都博物馆“京慧AI导览”、上海博物馆 AI
+                导览“小可”形成头部示范。
+              </div>
+            </div>
+          </div>
+          <p>
+            对文旅机构而言，选择可控、可信、可审的 AI
+            系统，将从“创新尝试”变成数字化升级的必要配置。
+          </p>
+          <p class="source">
+            文化和旅游部官网；北京市文化和旅游局；中国旅游报。
+          </p>
+        </section>
+
+        <section id="team" class="print-break-before">
+          <div class="section-head">
+            <div class="section-no">02</div>
+            <div>
+              <h2>团队成员</h2>
+            </div>
+          </div>
+          <div class="team-grid">
+            <div class="person-card" data-degree="博士">
+              <h3>张哲</h3>
+              <div class="role">战略测算与融资</div>
+              <p>
+                北京师范大学 · 政治经济学 · 博士<br />曾就职中国建设银行总行研究院<br />融资计划、财务模型、市场规模测算
+              </p>
+            </div>
+            <div class="person-card" data-degree="博士">
+              <h3>吴双桐</h3>
+              <div class="role">文博语料统筹</div>
+              <p>
+                北京大学 · 考古与文物修复 · 博士<br />语料采购清洗、专家偏好标注、拒答样本管理
+              </p>
+            </div>
+            <div class="person-card" data-degree="博士">
+              <h3>汤忱鑫</h3>
+              <div class="role">AI+DICT顾问</div>
+              <p>
+                北京师范大学 · 政治经济学 · 博士<br />曾就职中国建设银行总行研究院<br />融资计划、财务模型、市场规模测算
+              </p>
+            </div>
+            <div class="person-card" data-degree="硕士">
+              <h3>蒋祎蓝</h3>
+              <div class="role">客户成功与财务运营</div>
+              <p>
+                多伦多大学 · 教育学硕士 · 商学学士<br />曾任Unisystech咨询公司
+                Financial Analyst<br />客户对接、上线培训、合同与预算跟踪
+              </p>
+            </div>
+            <div class="person-card" data-degree="本科">
+              <h3>马可</h3>
+              <div class="role">系统架构研发</div>
+              <p>
+                南京理工大学 · 软件工程<br />多次信息化项目经验<br />
+                检索增强生成引擎、安全检测模块、SaaS平台后端
+              </p>
+            </div>
+            <div class="person-card" data-degree="本科">
+              <h3>季豪杰</h3>
+              <div class="role">商务拓展与运营</div>
+              <p>
+                河北经贸大学 · 贸易经济学<br />曾任振德医疗 · 商务主管<br />客户开拓、产品定价、客户成功
+              </p>
+            </div>
+            <div class="person-card" data-degree="本科">
+              <h3>王颖怡</h3>
+              <div class="role">财务与内控</div>
+              <p>
+                南京理工大学 · 会计学<br />财务工作经验<br />合同台账、交付资料、回款记录
+              </p>
+            </div>
+            <div class="person-card" data-degree="本科">
+              <h3>丁龙</h3>
+              <div class="role">产品开发与交付</div>
+              <p>
+                南京理工大学 · 软件工程<br />多年智能系统集成经验<br />前端小程序/H5、运营后台、知识库冷启动工具
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="pain" class="print-break-before">
+          <div class="section-head">
+            <div class="section-no">03</div>
+            <div>
+              <h2>用户痛点</h2>
+              <p class="lead">
+                文旅机构面临“客流增长、预算收紧、人员不足、AI落地难”四重夹击。<br />
+                现有市场供给无法满足中小机构对低门槛、可审可信、快速上线和持续运营的真实需求。
+              </p>
+            </div>
+          </div>
+          <div class="grid-6">
+            <div class="pain-card">
+              <div class="pain-no">01</div>
+              <h3>专业人员被重复服务挤占</h3>
+              <span class="big">8,659人次/年</span>
+              <p>
+                全国文物机构从业人员17.9万人，文物机构年观众15.5亿人次。开放时间、票价、路线等基础问询持续占用高价值人力。
+              </p>
+              <div class="capability">AI游客问答 + AI智能讲解</div>
+            </div>
+            <div class="pain-card">
+              <div class="pain-no">02</div>
+              <h3>客流高增但人均消费下滑</h3>
+              <span class="big">-5.56%</span>
+              <p>
+                2025年出游人次65.22亿，同比+16.2%；人均消费966.26元，同比下降。二次转化缺乏游客兴趣分析与精准推荐抓手。
+              </p>
+              <div class="capability">
+                AI运营顾问 + AIGC内容生产 + AI文创助手
+              </div>
+            </div>
+            <div class="pain-card">
+              <div class="pain-no">03</div>
+              <h3>内容容错率极低</h3>
+              <span class="big">4,233.3万件/套</span>
+              <p>
+                全国国有博物馆藏品占全国文物机构藏品83.3%。史实、出处、学术观点一旦出错，会引发公信力与舆情风险。
+              </p>
+              <div class="capability">
+                检索增强生成 + 专家偏好对齐 + 两级内容安全检测
+              </div>
+            </div>
+            <div class="pain-card">
+              <div class="pain-no">04</div>
+              <h3>预算收紧，高成本定制难承担</h3>
+              <span class="big">1,216.2亿元</span>
+              <p>
+                2024年文化和旅游事业费同比下降5%。头部项目300万元以上、上线周期180天以上，中小机构难以采购。
+              </p>
+              <div class="capability">
+                SaaS标准化交付 + 低门槛建设费 + 模块化按需选购
+              </div>
+            </div>
+            <div class="pain-card">
+              <div class="pain-no">05</div>
+              <h3>研学供给粗放</h3>
+              <span class="big">2,132亿元</span>
+              <p>
+                2025年研学旅行市场规模突破2,132亿元，同比增速超15%。课程设计、适龄分级、反馈记录和数据沉淀能力不足。
+              </p>
+              <div class="capability">AI研学助手 + 运营数据看板</div>
+            </div>
+            <div class="pain-card">
+              <div class="pain-no">06</div>
+              <h3>文化资源沉睡展柜</h3>
+              <span class="big">999.82亿元</span>
+              <p>
+                2024年全国文创衍生实体产品市场999.82亿元，“十五五”末广义文创大市场预计超10万亿元，但多数场馆缺乏持续内容生产能力。
+              </p>
+              <div class="capability">AI文创助手 + AIGC视频生产 + 虚拟IP</div>
+            </div>
+          </div>
+          <p class="source">
+            文化和旅游部《2024年文化和旅游发展统计公报》；钛媒体；艾媒咨询；人民日报海外版；央广网；中国文化传媒集团《中国文创发展趋势报告》；上海市政府新闻办。
+          </p>
+        </section>
+
+        <section id="solution" class="print-break-before">
+          <div class="section-head">
+            <div class="section-no">04</div>
+            <div>
+              <h2>解决方案</h2>
+              <p class="lead">
+                本项目以小程序/H5
+                为游客入口，以运营后台为机构工具，覆盖游客与机构交互的完整生命周期。通过后训练和工程增强，将研发资源集中在文旅领域数据治理、模型对齐和可信生成机制。
+              </p>
+            </div>
+          </div>
+
+          <h3>4.1 三段式价值框架</h3>
+          <div class="journey visual-block">
+            <div class="journey-stage" style="--stage-color: #2d7e89">
+              <h3>来之前 · AI旅行社</h3>
+              <ul>
+                <li style="list-style: none">景区信息与票价查询</li>
+                <li style="list-style: none">个性化游玩路线规划</li>
+                <li style="list-style: none">购票引导与预约辅助</li>
+                <li style="list-style: none">活动预告与推荐</li>
+              </ul>
+            </div>
+            <div class="journey-stage" style="--stage-color: #246b5a">
+              <h3>游玩中 · AI导游</h3>
+              <ul>
+                <li style="list-style: none">展品/景点AI讲解</li>
+                <li style="list-style: none">实时路线导览</li>
+                <li style="list-style: none">多语言智能问答</li>
+                <li style="list-style: none">研学任务卡与互动</li>
+              </ul>
+            </div>
+            <div class="journey-stage" style="--stage-color: #d79b45">
+              <h3>离开后 · AI数据顾问</h3>
+              <ul>
+                <li style="list-style: none">游客行为数据看板</li>
+                <li style="list-style: none">游客画像分析</li>
+                <li style="list-style: none">高频问题与热点分析</li>
+                <li style="list-style: none">文创/研学转化推荐</li>
+              </ul>
+            </div>
+          </div>
+          <p>
+            AI
+            入口替代传统游客服务的全部高频事务，所有游客交互数据天然沉淀在平台，构成运营分析的数据基础。
+          </p>
+
+          <h3>4.2 技术路线</h3>
+          <div class="stack visual-block">
+            <div class="stack-layer">
+              <div class="layer">应用层</div>
+              <div>
+                游客端小程序/H5、机构端运营管理后台、知识库管理、数据看板、模块配置。
+              </div>
+            </div>
+            <div class="stack-layer">
+              <div class="layer">能力层</div>
+              <div>
+                AI智能讲解、AI游客问答、AI研学助手、AI文创助手、AI运营助手、检索增强生成。
+              </div>
+            </div>
+            <div class="stack-layer">
+              <div class="layer">模型层</div>
+              <div>
+                LLM基座模型+ 领域监督后训练 + 专家偏好对齐 + 链式模型调用。
+              </div>
+            </div>
+            <div class="stack-layer">
+              <div class="layer">基础设施层</div>
+              <div>
+                多部署模式，适配不同安全等级需求；端侧小模型与热缓存优先，减少大模型调用。
+              </div>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>模块</th>
+                <th>作用</th>
+                <th>核心优势</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>LLM基座模型</td>
+                <td>复用通用语义、推理、生成能力</td>
+                <td>降低部署成本与训练周期</td>
+              </tr>
+              <tr>
+                <td>领域监督后训练</td>
+                <td>文旅垂类语料训练</td>
+                <td>专业输出能力显著提升</td>
+              </tr>
+              <tr>
+                <td>专家偏好对齐</td>
+                <td>专家评测、打分排序、拒答样本标注</td>
+                <td>降低史实错误与口径不一致风险</td>
+              </tr>
+              <tr>
+                <td>检索增强生成</td>
+                <td>基于机构私有知识库优先检索生成</td>
+                <td>支持来源可查、原文可引</td>
+              </tr>
+              <tr>
+                <td>两级内容安全检测</td>
+                <td>输入语义边界检测，输出硬编码敏感词过滤</td>
+                <td>AI可直接对公众使用，无需机构自行审核</td>
+              </tr>
+              <tr>
+                <td>链式模型调用</td>
+                <td>端侧小模型+热缓存优先，降低大模型调用次数</td>
+                <td>推理边际成本当前降低约80%，成熟后可达95%</td>
+              </tr>
+              <tr>
+                <td>本地/云端定制部署</td>
+                <td>云部署、本地化、混合部署</td>
+                <td>适配不同安全等级需求</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>两级内容安全检测</h4>
+          <div class="pipeline visual-block">
+            <div class="pipe-card">
+              <h4>游客输入</h4>
+              <p>进入轻量分类模型与规则硬编码，先判断是否属于文旅范畴。</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="pipe-card">
+              <h4>第一级：语义边界检测</h4>
+              <p>
+                超出范畴则拦截并返回引导话术，节省推理成本；范畴内进入大模型生成。
+              </p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="pipe-card">
+              <h4>第二级：输出合规检测</h4>
+              <p>
+                硬编码敏感词过滤与规则检测；命中规则则拒答，通过后展示给游客。
+              </p>
+            </div>
+          </div>
+
+          <h4>数据飞轮与技术壁垒</h4>
+          <div class="note-box">
+            <strong>核心逻辑：</strong
+            >随客户数量增加，平台持续沉淀文旅领域语料、专家偏好数据、游客高频问题、标准答案与拒答样本、运营转化数据。语料积累越多，同等智能所需模型参数规模越小，推理成本内生下降，形成“交付→语料沉淀→模型迭代→下一个客户交付成本更低”的正向闭环。
+          </div>
+          <div class="flywheel-data">
+            <div class="data-node">文旅领域语料</div>
+            <div class="data-node">专家偏好数据</div>
+            <div class="data-node">游客高频问题</div>
+            <div class="data-node">标准答案与拒答样本</div>
+            <div class="data-node">运营转化数据</div>
+            <div class="data-node">模型迭代与成本下降</div>
+          </div>
+
+          <h3>4.3 产品模块体系</h3>
+          <p>
+            客户采购的是可部署、可验收、可迭代的标准化产品。SaaS
+            平台交付两个标准产品：游客端小程序/H5，以及机构端运营管理后台，覆盖知识库管理、数据看板与模块配置。
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>模块</th>
+                <th>核心交付内容</th>
+                <th>对应痛点</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AI智能讲解</td>
+                <td>展品讲解、主题路线、语音导览、多语言讲解</td>
+                <td>专业人员重复服务压力</td>
+              </tr>
+              <tr>
+                <td>AI游客问答</td>
+                <td>开放时间、路线、活动、票务、展品问答</td>
+                <td>专业人员重复服务压力</td>
+              </tr>
+              <tr>
+                <td>AI研学助手</td>
+                <td>研学路线、任务卡、互动题、课程脚本、反馈记录</td>
+                <td>研学供给粗放</td>
+              </tr>
+              <tr>
+                <td>AI文创助手</td>
+                <td>文物故事、IP设定、商品卖点、短视频脚本、宣传文案</td>
+                <td>内容生产能力缺失</td>
+              </tr>
+              <tr>
+                <td>AI运营助手</td>
+                <td>活动推荐、文创推荐、研学推荐、用户兴趣分析</td>
+                <td>二次转化缺乏抓手</td>
+              </tr>
+              <tr>
+                <td>检索增强生成</td>
+                <td>馆藏资料、展签、地方志、非遗资料、标准答案、拒答样本</td>
+                <td>内容安全与合规</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <strong>AIGC内容生产（旗舰版）：</strong>虚拟 IP
+            形象设定与定制、AIGC
+            短视频生成优先接入成熟第三方多模态模型，同步储备自研视频模型后训练能力，确保当前可交付的同时，随平台数据积累形成差异化内容壁垒。
+          </p>
+        </section>
+
+        <section id="competition" class="print-break-before">
+          <div class="section-head">
+            <div class="section-no">05</div>
+            <div>
+              <h2>竞品分析</h2>
+              <p class="lead">
+                头部标杆项目已验证 AI+文旅的落地价值，但模式无法下沉。<br />
+                本项目的竞争机会，是把头部验证的能力转化为适配更大的中小机构市场的标准化产品。
+              </p>
+            </div>
+          </div>
+          <div class="comparison visual-block">
+            <div class="compare-col">
+              <h3>头部馆 × 头部企业项目</h3>
+              <ul>
+                <li style="list-style: none">
+                  <strong>代表案例：</strong
+                  >故宫×火山引擎、首都博物馆“京慧AI”、上海博物馆AI“小可”。
+                </li>
+                <li style="list-style: none">
+                  <strong>建设成本：</strong>定制化，300万元以上。
+                </li>
+                <li style="list-style: none">
+                  <strong>上线周期：</strong
+                  >需求沟通、定制开发、系统联调，180天以上。
+                </li>
+                <li style="list-style: none">
+                  <strong>交付内容：</strong>高度定制，依托头部馆既有平台体系。
+                </li>
+                <li style="list-style: none">
+                  <strong>产品价值：</strong>品牌展示、形象工程、行业示范。
+                </li>
+                <li style="list-style: none">
+                  <strong>目标客户：</strong>头部博物馆。
+                </li>
+              </ul>
+            </div>
+            <div class="compare-col">
+              <h3>本项目</h3>
+              <ul>
+                <li style="list-style: none">
+                  <strong>代表对象：</strong>面向全国中小机构。
+                </li>
+                <li style="list-style: none">
+                  <strong>建设成本：</strong>建设费5万元起。
+                </li>
+                <li style="list-style: none">
+                  <strong>上线周期：</strong>模块化交付，30天快速上线。
+                </li>
+                <li style="list-style: none">
+                  <strong>交付内容：</strong>标准化SaaS，零基础即可上线。
+                </li>
+                <li style="list-style: none">
+                  <strong>产品价值：</strong
+                  >提升服务体验、扩大传播、赋能实际创收。
+                </li>
+                <li style="list-style: none">
+                  <strong>收入模式：</strong
+                  >建设费+年度订阅+模块扩展+内容运营服务，持续收入。
+                </li>
+              </ul>
+            </div>
+          </div>
+          <p>
+            全国约80%的非头部中小机构（约20,000家）存在AI
+            升级需求，但无力承担头部项目模式。
+            <br />本项目用更轻的技术路线、更低的采购门槛、更短的上线周期，快速提升中小机构的服务能力、内容生产力和创收能力。
+          </p>
+        </section>
+
+        <section id="business" class="print-break-before">
+          <div class="section-head">
+            <div class="section-no">06</div>
+            <div>
+              <h2>商业模式</h2>
+              <p class="lead">
+                低门槛建设费切入，年度订阅构建 ARR
+                基础，模块扩展提升单客收入，数据飞轮压缩边际成本，形成可复制的文旅
+                AI 基础设施。
+              </p>
+            </div>
+          </div>
+
+          <h3>6.1 收入结构</h3>
+          <div class="funnel visual-block">
+            <div
+              class="funnel-row"
+              style="--funnel-color: #b55239; width: 100%"
+            >
+              <strong>建设费（一次性）</strong>
+              <span>低门槛切入，降低首次决策门槛</span>
+            </div>
+
+            <div class="funnel-row" style="--funnel-color: #d79b45; width: 88%">
+              <strong>年度订阅（ARR）</strong>
+              <span>AI入口上线后形成服务依赖，迁移成本高，续费动机强</span>
+            </div>
+
+            <div class="funnel-row" style="--funnel-color: #246b5a; width: 78%">
+              <strong>模块扩展</strong>
+              <span>研学、文创、运营分析、多语言等按需叠加，推动NRR提升</span>
+            </div>
+
+            <div class="funnel-row" style="--funnel-color: #2d7e89; width: 70%">
+              <strong>内容运营服务</strong>
+              <span>代运营、知识库更新、AIGC内容生产，深度绑定高价值客户</span>
+            </div>
+          </div>
+
+          <h3>6.2 定价体系</h3>
+          <div class="pricing">
+            <div class="price-card">
+              <h3>基础版</h3>
+              <div class="price">9–14万元</div>
+              <dl>
+                <dt>定位</dt>
+                <dd>AI旅行社 + AI导游</dd>
+                <dt>建设费</dt>
+                <dd>5–8万元</dd>
+                <dt>年费</dt>
+                <dd>4–6万元/年</dd>
+                <dt>多语言</dt>
+                <dd>中文</dd>
+                <dt>交付</dt>
+                <dd>H5/小程序；基础配置后台</dd>
+              </dl>
+            </div>
+            <div class="price-card featured">
+              <h3>标准版</h3>
+              <div class="price">20–30万元</div>
+              <dl>
+                <dt>定位</dt>
+                <dd>基础版 + AI运营顾问</dd>
+                <dt>建设费</dt>
+                <dd>10–15万元</dd>
+                <dt>年费</dt>
+                <dd>10–15万元/年</dd>
+                <dt>多语言</dt>
+                <dd>中文+英文</dd>
+                <dt>交付</dt>
+                <dd>H5/小程序；运营数据看板</dd>
+              </dl>
+            </div>
+            <div class="price-card">
+              <h3>旗舰版</h3>
+              <div class="price">38–55万元</div>
+              <dl>
+                <dt>定位</dt>
+                <dd>标准版 + AI文创助手 + AIGC视频</dd>
+                <dt>建设费</dt>
+                <dd>18–25万元</dd>
+                <dt>年费</dt>
+                <dd>20–30万元/年</dd>
+                <dt>多语言</dt>
+                <dd>中英日韩+定制</dd>
+                <dt>交付</dt>
+                <dd>高级数据分析；旗舰模块</dd>
+              </dl>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>扩展模块</th>
+                <th>定价</th>
+                <th>扩展模块</th>
+                <th>定价</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>多点位管理</td>
+                <td>8,000元/年/新增点位</td>
+                <td>品牌深度定制</td>
+                <td>2–3万元</td>
+              </tr>
+              <tr>
+                <td>API开放接口</td>
+                <td>3万元/年</td>
+                <td>数据大屏</td>
+                <td>1.5万元/年</td>
+              </tr>
+              <tr>
+                <td>AIGC视频加购包</td>
+                <td>980元/条</td>
+                <td>人工代运营服务</td>
+                <td>5–10万元/年</td>
+              </tr>
+              <tr>
+                <td>研学课程模块</td>
+                <td>2万元/年</td>
+                <td>文创助手模块</td>
+                <td>2万元/年</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>6.3 市场规模（TAM/SAM/SOM）</h3>
+          <div class="market-rings visual-block">
+            <div class="ring">
+              <span class="tam">TAM 22亿/年</span>
+              <span class="sam">SAM 5.55亿/年</span>
+              <span class="som">SOM 7,779万</span>
+            </div>
+            <div class="ring-notes">
+              <div class="ring-note" style="--ring-color: #246b5a">
+                <b>TAM：约22亿元/年</b
+                ><br />全国约24,000个文旅机构，加权平均年费约9.25万元/家，ARR口径。
+              </div>
+              <div class="ring-note" style="--ring-color: #d79b45">
+                <b>SAM：约5.55亿元/年</b
+                ><br />聚焦头部企业难以下沉的中小机构，约20,000家中按30%有效触达率计算约6,000家。
+              </div>
+              <div class="ring-note" style="--ring-color: #b55239">
+                <b>SOM：三年累计确认收入约7,800万元</b
+                ><br />三年累计签约450家，SAM渗透率7.5%，第三年末ARR 3,841万元。
+              </div>
+            </div>
+          </div>
+
+          <div class="chart">
+            <svg
+              class="chart-svg"
+              viewBox="0 0 760 360"
+              role="img"
+              aria-label="三年确认收入与年末ARR"
+            >
+              <text x="70" y="25" class="svg-title">
+                SOM 收入推进：确认收入 × 退出 ARR
+              </text>
+              <line x1="70" y1="292.0" x2="690" y2="292.0" class="svg-grid" />
+              <text x="58" y="296.0" text-anchor="end" class="svg-axis-label">
+                0
+              </text>
+              <line x1="70" y1="229.0" x2="690" y2="229.0" class="svg-grid" />
+              <text x="58" y="233.0" text-anchor="end" class="svg-axis-label">
+                1500
+              </text>
+              <line x1="70" y1="166.0" x2="690" y2="166.0" class="svg-grid" />
+              <text x="58" y="170.0" text-anchor="end" class="svg-axis-label">
+                3000
+              </text>
+              <line x1="70" y1="103.0" x2="690" y2="103.0" class="svg-grid" />
+              <text x="58" y="107.0" text-anchor="end" class="svg-axis-label">
+                4500
+              </text>
+              <line x1="70" y1="40.0" x2="690" y2="40.0" class="svg-grid" />
+              <text x="58" y="44.0" text-anchor="end" class="svg-axis-label">
+                6000
+              </text>
+              <line x1="70" y1="292" x2="690" y2="292" class="svg-axis" />
+              <rect
+                x="135.3"
+                y="279.7"
+                width="76"
+                height="12.3"
+                class="svg-rev-build"
+                rx="2"
+              />
+              <rect
+                x="135.3"
+                y="273.8"
+                width="76"
+                height="5.8"
+                class="svg-rev-sub"
+                rx="2"
+              />
+              <text x="173.3" y="263.8" text-anchor="middle" class="svg-label">
+                433万
+              </text>
+              <text
+                x="173.3"
+                y="320"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                第1年
+              </text>
+              <rect
+                x="342.0"
+                y="242.6"
+                width="76"
+                height="49.4"
+                class="svg-rev-build"
+                rx="2"
+              />
+              <rect
+                x="342.0"
+                y="210.0"
+                width="76"
+                height="32.6"
+                class="svg-rev-sub"
+                rx="2"
+              />
+              <text x="380.0" y="200.0" text-anchor="middle" class="svg-label">
+                1,953万
+              </text>
+              <text
+                x="380.0"
+                y="320"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                第2年
+              </text>
+              <rect
+                x="548.7"
+                y="168.5"
+                width="76"
+                height="123.5"
+                class="svg-rev-build"
+                rx="2"
+              />
+              <rect
+                x="548.7"
+                y="65.5"
+                width="76"
+                height="103.0"
+                class="svg-rev-sub"
+                rx="2"
+              />
+              <text x="586.7" y="55.5" text-anchor="middle" class="svg-label">
+                5,393万
+              </text>
+              <text
+                x="586.7"
+                y="320"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                第3年
+              </text>
+              <path
+                d="M 173.3,280.3 L 380.0,236.1 L 586.7,130.7"
+                class="svg-arr-line"
+              />
+              <circle cx="173.3" cy="280.3" r="5.5" class="svg-arr-dot" />
+              <text x="220" y="285" class="svg-label svg-label-accent">
+                277.5万ARR
+              </text>
+              <circle cx="380.0" cy="236.1" r="5.5" class="svg-arr-dot" />
+              <text x="425" y="240" class="svg-label svg-label-accent">
+                1332万ARR
+              </text>
+              <circle cx="586.7" cy="130.7" r="5.5" class="svg-arr-dot" />
+              <text x="633" y="130" class="svg-label svg-label-accent">
+                3841万ARR
+              </text>
+              <g class="svg-legend" transform="translate(70,335)">
+                <rect width="16" height="8" class="svg-rev-build"></rect>
+                <text x="24" y="8">建设费确认</text>
+                <rect x="130" width="16" height="8" class="svg-rev-sub"></rect>
+                <text x="154" y="8">订阅确认</text>
+                <line
+                  x1="270"
+                  y1="4"
+                  x2="294"
+                  y2="4"
+                  class="svg-arr-line"
+                ></line>
+                <circle cx="282" cy="4" r="4" class="svg-arr-dot"></circle>
+                <text x="304" y="8">年末ARR</text>
+              </g>
+            </svg>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>年份</th>
+                <th>新签客户</th>
+                <th>年末留存客户</th>
+                <th>建设费收入</th>
+                <th>订阅收入</th>
+                <th>当年总收入</th>
+                <th>年末ARR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>第1年</td>
+                <td>30家</td>
+                <td>30家</td>
+                <td>294万元</td>
+                <td>139万元</td>
+                <td><strong>433万元</strong></td>
+                <td>277.5万元</td>
+              </tr>
+              <tr>
+                <td>第2年</td>
+                <td>120家</td>
+                <td>144家</td>
+                <td>1,176万元</td>
+                <td>777万元</td>
+                <td><strong>1,953万元</strong></td>
+                <td>1,332万元</td>
+              </tr>
+              <tr>
+                <td>第3年</td>
+                <td>300家</td>
+                <td>415家</td>
+                <td>2,940万元</td>
+                <td>2,453万元</td>
+                <td><strong>5,393万元</strong></td>
+                <td>3,841万元</td>
+              </tr>
+              <tr>
+                <td><strong>三年合计</strong></td>
+                <td><strong>450家</strong></td>
+                <td>—</td>
+                <td><strong>4,410万元</strong></td>
+                <td><strong>3,369万元</strong></td>
+                <td><strong>7,779万元</strong></td>
+                <td><strong>3,841万元</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note-box">
+            <strong>口径说明：</strong
+            >建设费为一次性实施费，于交付当年确认；订阅收入按新收入准则（CAS
+            14，与 IFRS 15
+            趋同）分期确认。新签客户按全年平均年中上线，首年确认约50%年度订阅费、其余递延次年，次年起100%确认，并叠加80%年留存率。年末
+            ARR 为年化经常性收入跑动率（＝上年 ARR × 80%＋当年新增
+            ARR），与确认收入之差对应递延收入的时间滚动。表中“第N年”指 Pre-A
+            融资后启动的连续商业化年度。
+          </div>
+          <p class="source">
+            文化和旅游部；国家文物局；教育部；本项目定价体系测算。
+          </p>
+        </section>
+        <section id="financing" class="print-break-before">
+          <div class="section-head">
+            <div class="section-no">07</div>
+            <div>
+              <h2>融资计划</h2>
+              <p class="lead">
+                本轮为天使轮（种子期），计划融资300–500万元人民币，取中值400万元。目标是完成
+                SaaS 平台 MVP
+                开发，签下首个试点客户并完成上线，产出真实游客交互数据，为 Pre-A
+                融资准备可验证的 PMF。
+              </p>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="metric-card">
+              <b>400万元</b><span>融资金额基准中值</span>
+            </div>
+            <div class="metric-card">
+              <b>1,600万元</b><span>投前估值参考</span>
+            </div>
+            <div class="metric-card">
+              <b>20%</b><span>投后2,000万元估值下对应出让比例</span>
+            </div>
+          </div>
+          <p>最终估值与出让比例以投资协议为准。</p>
+
+          <h3>7.2 资金用途拆分</h3>
+          <div class="use-pie visual-block">
+            <div
+              class="pie"
+              role="img"
+              aria-label="400万元基准资金用途饼图：技术研发45%、语料与知识库15%、首客试点15%、团队人力18%、运营与杂项7%"
+            ></div>
+            <div class="legend-list">
+              <div class="legend-item">
+                <span class="swatch" style="--swatch: #b55239"></span
+                ><strong>技术研发 45%</strong
+                ><span
+                  >150–200万元；基座模型后训练、RAG工程、安全检测模块、SaaS平台后端、前后端交付。</span
+                >
+              </div>
+              <div class="legend-item">
+                <span class="swatch" style="--swatch: #d79b45"></span
+                ><strong>语料与数据 15%</strong
+                ><span
+                  >50–80万元；文旅垂类语料采购、清洗标注、专家偏好数据收集。</span
+                >
+              </div>
+              <div class="legend-item">
+                <span class="swatch" style="--swatch: #246b5a"></span
+                ><strong>首客试点 15%</strong
+                ><span
+                  >50–80万元；首个试点机构知识库冷启动人工服务、产品联调、上线支持。</span
+                >
+              </div>
+              <div class="legend-item">
+                <span class="swatch" style="--swatch: #2d7e89"></span
+                ><strong>团队人力 18%</strong
+                ><span>60–80万元；12个月核心团队薪资补充。</span>
+              </div>
+              <div class="legend-item">
+                <span class="swatch" style="--swatch: #7d6d59"></span
+                ><strong>运营与杂项 7%</strong
+                ><span>20–40万元；服务器、云资源、法务、工商、差旅。</span>
+              </div>
+            </div>
+          </div>
+          <p>
+            以400万元为基准，五项分别对应约180 / 60 / 60 / 72 /
+            28万元，合计400万元。
+          </p>
+
+          <h3>7.3 月度资金消耗计划（Burn Rate）</h3>
+          <p>月均固定支出约6–7.5万元/月。</p>
+          <div class="chart">
+            <svg
+              class="chart-svg"
+              viewBox="0 0 760 330"
+              role="img"
+              aria-label="种子期12个月账上剩余资金曲线"
+            >
+              <text x="58" y="24" class="svg-title">剩余资金与里程碑</text>
+              <line x1="58" y1="270.0" x2="728" y2="270.0" class="svg-grid" />
+              <text x="48" y="274.0" text-anchor="end" class="svg-axis-label">
+                0
+              </text>
+              <line x1="58" y1="211.5" x2="728" y2="211.5" class="svg-grid" />
+              <text x="48" y="215.5" text-anchor="end" class="svg-axis-label">
+                100
+              </text>
+              <line x1="58" y1="153.0" x2="728" y2="153.0" class="svg-grid" />
+              <text x="48" y="157.0" text-anchor="end" class="svg-axis-label">
+                200
+              </text>
+              <line x1="58" y1="94.5" x2="728" y2="94.5" class="svg-grid" />
+              <text x="48" y="98.5" text-anchor="end" class="svg-axis-label">
+                300
+              </text>
+              <line x1="58" y1="36.0" x2="728" y2="36.0" class="svg-grid" />
+              <text x="48" y="40.0" text-anchor="end" class="svg-axis-label">
+                400
+              </text>
+              <path
+                d="M 58.0,46.5 L 118.9,62.9 L 179.8,75.8 L 240.7,90.4 L 301.6,100.9 L 362.5,109.7 L 423.5,121.4 L 484.4,131.9 L 545.3,139.0 L 606.2,147.7 L 667.1,154.8 L 728.0,161.8 L 728.0,270 L 58.0,270 Z"
+                class="svg-area"
+              />
+              <path
+                d="M 58.0,46.5 L 118.9,62.9 L 179.8,75.8 L 240.7,90.4 L 301.6,100.9 L 362.5,109.7 L 423.5,121.4 L 484.4,131.9 L 545.3,139.0 L 606.2,147.7 L 667.1,154.8 L 728.0,161.8"
+                class="svg-arr-line"
+              />
+              <circle cx="58.0" cy="46.5" r="3.5" class="svg-small-dot" />
+              <circle cx="118.9" cy="62.9" r="3.5" class="svg-small-dot" />
+              <circle cx="179.8" cy="75.8" r="3.5" class="svg-small-dot" />
+              <circle cx="240.7" cy="90.4" r="3.5" class="svg-small-dot" />
+              <circle cx="301.6" cy="100.9" r="3.5" class="svg-small-dot" />
+              <circle cx="362.5" cy="109.7" r="5.5" class="svg-arr-dot" />
+              <text
+                x="362.5"
+                y="96.7"
+                text-anchor="middle"
+                class="svg-label svg-label-accent"
+              >
+                MVP完成
+              </text>
+              <circle cx="423.5" cy="121.4" r="3.5" class="svg-small-dot" />
+              <circle cx="484.4" cy="131.9" r="5.5" class="svg-arr-dot" />
+              <text
+                x="484.4"
+                y="118.9"
+                text-anchor="middle"
+                class="svg-label svg-label-accent"
+              >
+                首客上线
+              </text>
+              <circle cx="545.3" cy="139.0" r="3.5" class="svg-small-dot" />
+              <circle cx="606.2" cy="147.7" r="3.5" class="svg-small-dot" />
+              <circle cx="667.1" cy="154.8" r="5.5" class="svg-arr-dot" />
+              <text
+                x="667.1"
+                y="141.8"
+                text-anchor="middle"
+                class="svg-label svg-label-accent"
+              >
+                Pre-A启动
+              </text>
+              <circle cx="728.0" cy="161.8" r="3.5" class="svg-small-dot" />
+              <line x1="58" y1="270" x2="728" y2="270" class="svg-axis" />
+              <text
+                x="58.0"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                1
+              </text>
+              <text
+                x="118.9"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                2
+              </text>
+              <text
+                x="179.8"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                3
+              </text>
+              <text
+                x="240.7"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                4
+              </text>
+              <text
+                x="301.6"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                5
+              </text>
+              <text
+                x="362.5"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                6
+              </text>
+              <text
+                x="423.5"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                7
+              </text>
+              <text
+                x="484.4"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                8
+              </text>
+              <text
+                x="545.3"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                9
+              </text>
+              <text
+                x="606.2"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                10
+              </text>
+              <text
+                x="667.1"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                11
+              </text>
+              <text
+                x="728.0"
+                y="294"
+                text-anchor="middle"
+                class="svg-axis-label"
+              >
+                12
+              </text>
+              <text x="58" y="320" class="svg-caption">
+                第12月仍保留185万元安全垫，覆盖Pre-A延期2–3个月缓冲。
+              </text>
+            </svg>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>阶段</th>
+                <th>月份</th>
+                <th>核心任务</th>
+                <th>当月支出</th>
+                <th>累计消耗</th>
+                <th>剩余资金</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>启动期</td>
+                <td>第1月</td>
+                <td>工商/法务/基础设施</td>
+                <td>18万</td>
+                <td>18万</td>
+                <td>382万</td>
+              </tr>
+              <tr>
+                <td>研发期</td>
+                <td>第2月</td>
+                <td>语料采购+平台开发启动</td>
+                <td>28万</td>
+                <td>46万</td>
+                <td>354万</td>
+              </tr>
+              <tr>
+                <td>研发期</td>
+                <td>第3月</td>
+                <td>语料标注+模型后训练准备</td>
+                <td>22万</td>
+                <td>68万</td>
+                <td>332万</td>
+              </tr>
+              <tr>
+                <td>研发期</td>
+                <td>第4月</td>
+                <td>模型后训练（算力集中消耗）</td>
+                <td>25万</td>
+                <td>93万</td>
+                <td>307万</td>
+              </tr>
+              <tr>
+                <td>研发期</td>
+                <td>第5月</td>
+                <td>模型迭代+平台开发</td>
+                <td>18万</td>
+                <td>111万</td>
+                <td>289万</td>
+              </tr>
+              <tr>
+                <td>MVP期</td>
+                <td>第6月</td>
+                <td><strong>MVP完成+内测（里程碑）</strong></td>
+                <td>15万</td>
+                <td>126万</td>
+                <td>274万</td>
+              </tr>
+              <tr>
+                <td>试点期</td>
+                <td>第7月</td>
+                <td>首客对接+知识库冷启动</td>
+                <td>20万</td>
+                <td>146万</td>
+                <td>254万</td>
+              </tr>
+              <tr>
+                <td>试点期</td>
+                <td>第8月</td>
+                <td><strong>系统联调+首客上线（里程碑）</strong></td>
+                <td>18万</td>
+                <td>164万</td>
+                <td>236万</td>
+              </tr>
+              <tr>
+                <td>验证期</td>
+                <td>第9月</td>
+                <td>运营数据收集+模型优化</td>
+                <td>12万</td>
+                <td>176万</td>
+                <td>224万</td>
+              </tr>
+              <tr>
+                <td>验证期</td>
+                <td>第10月</td>
+                <td>第二家客户开拓+数据沉淀</td>
+                <td>15万</td>
+                <td>191万</td>
+                <td>209万</td>
+              </tr>
+              <tr>
+                <td>融资准备期</td>
+                <td>第11月</td>
+                <td><strong>数据包整理+Pre-A融资启动（里程碑）</strong></td>
+                <td>12万</td>
+                <td>203万</td>
+                <td>197万</td>
+              </tr>
+              <tr>
+                <td>融资准备期</td>
+                <td>第12月</td>
+                <td>Pre-A路演+第二客户推进</td>
+                <td>12万</td>
+                <td>215万</td>
+                <td><strong>185万</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            12个月总消耗约215万元，剩余185万元作为安全垫，覆盖 Pre-A
+            融资延期2–3个月的缓冲，无资金链断裂风险。<br />本表为种子期现金消耗，以
+            MVP 开发与试点上线验证为主，与 6.3 的商业化收入预测分属不同阶段。
+          </p>
+
+          <h3>7.4 里程碑与下一轮融资</h3>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot">0–6</div>
+              <div class="timeline-body">
+                <h3>第一阶段：MVP 与首个试点</h3>
+                <p>
+                  完成 SaaS 平台
+                  MVP，包含基础版全部功能、知识库管理系统、前端小程序/H5、运营后台基础版，签下首个试点客户并完成上线。
+                </p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot">7–12</div>
+              <div class="timeline-body">
+                <h3>第二阶段：试点数据与模型迭代</h3>
+                <p>
+                  基于试点数据完成模型第一次迭代，输出可量化客户价值数据，包括游客问答量、解说使用率、机构满意度，启动
+                  Pre-A 融资。
+                </p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot">Pre-A</div>
+              <div class="timeline-body">
+                <h3>下一轮融资：1,000–2,000万元</h3>
+                <p>
+                  触发条件为3–5家付费客户签约、ARR达30–50万元、单客户30天交付周期验证。Pre-A
+                  资金用于规模化销售团队扩张、行业语料持续沉淀、推动商业化第1年30家客户目标落地。
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="social" class="print-break-before">
+          <div class="section-head">
+            <div class="section-no">08</div>
+            <div>
+              <h2>社会价值</h2>
+              <p class="lead">
+                通过项目落地、知识更新、内容运营和本地交付，连接技术研发、文化内容与教育就业。
+              </p>
+            </div>
+          </div>
+          <div class="grid-3">
+            <div class="card">
+              <h4>创造数字文旅新就业</h4>
+              <p>
+                本项目强调长期运维、知识更新、内容运营和数据复盘，形成持续性就业。随试点馆、样板馆和城市文旅平台复制扩张，带动“技术研发+文化内容+运营服务+本地交付”的岗位链条持续增长。
+              </p>
+            </div>
+            <div class="card">
+              <h4>校企合作反哺学校</h4>
+              <p>
+                项目可与高校共建“AI+文旅实训基地”，将真实文旅项目转化为教学案例。学校获得产业案例，学生获得项目经验，企业获得稳定人才供给，文旅机构获得持续内容运营支持，形成正向闭环。
+              </p>
+            </div>
+            <div class="card">
+              <h4>培育技术型高价值人才</h4>
+              <p>
+                重点培养符合国家数字经济、人工智能和新质生产力发展方向的复合型人才，使其理解文化内容、数据治理、AI工程、产品运营和合规要求，具备跨学科、跨场景、可落地的综合能力。
+              </p>
+            </div>
+          </div>
+          <p>项目规模化后，将为地方数字文旅产业升级提供长期支撑。</p>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span
+          >文旅AI+：基于垂域模型的一体化解决方案 · 绘世万相 · 2026年7月</span
+        >
+      </footer>
+    </main>
+  </body>
+</html>
